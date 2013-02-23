@@ -3,7 +3,7 @@
 <head>
     <title>Leaflet Quick Start Guide Example</title>
     <meta charset="utf-8" />
-    <meta http-equiv="refresh" content="15" />
+    <!-- meta http-equiv="refresh" content="15" /-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link rel="stylesheet" href="leaflet.css" />
@@ -12,8 +12,8 @@
 <body>
     <div id="map" style="width: 600px; height: 400px"></div>
     <p>
-      <label for="range">Price range:</label>
-      <input type="text" id="range" style="border: 0; color: #f6931f; font-weight: bold;" />
+      <label for="range">Date range :</label>
+      <input type="text" id="range" style="border: 0; color: #f6931f; font-weight: bold; width: 600px;"/>
     </p>
     <div id="sliderrange"> </div>
     <div id="jsonresults"></div>
@@ -27,11 +27,11 @@
     <script>
     $(function() {
          var data;
+         var filteredArray = data;
          $.getJSON("withcoords-combined.js",function(result)
          {
-             
-            data = result;
-            $("#jsonresults").append("<h1> Total " + data.length + "  Records</h1> </br>");
+           data = result;
+           $("#jsonresults").html("<h1> Total " + data.length + "  Records</h1> </br>");
             data.sort(function(a,b) { return parseInt(a[13]) - parseInt(b[13]) } );
             mindate= parseInt(data[0][13])
             maxdate= parseInt(data[369][13])
@@ -41,13 +41,27 @@
               range: true,
               min: mindate,
               max: maxdate,
-              slide: function( event, ui ) {
+              slide: function( event, ui ) 
+                {
                 $( "#range" ).val( "$" + ui.values[ 0 ] + " - $" + ui.values[ 1 ] );
-                  }
+                // Filter the json data
+                 filteredArray = data.filter(function(a){
+                    time = parseInt(a[13])
+                    console.log(time, ui.values);
+                     
+                    if(time  > ui.values[ 0 ] &&  time  < ui.values[ 1 ])
+                        {
+                         console.log("yay");
+                         return(true);
+                        } 
+                });
+                $("#jsonresults").html("<h1> Total " + filteredArray.length + "  Records</h1> </br>");
+                }
              });
+             
             $( "#range" ).val( "$" + $( "#sliderrange" ).slider( "values", 0 ) +
               " - $" + $( "#sliderrange" ).slider( "values", 1 ) );
-          });
+         });
       });
 
         var map = L.map('map').setView([51.505, -0.09], 13);
