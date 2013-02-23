@@ -14,7 +14,12 @@ count = 0
 withcoords = []
 
 querybase = "http://maps.google.com/maps/api/geocode/json?address="
+print len(info["data"])
 for adata in info["data"]:
+    print count
+    if count < 300:
+        count = count + 1
+        continue
     words = adata[8].split()
 #    count2 = 0
 #    for aword in adata:
@@ -25,12 +30,14 @@ for adata in info["data"]:
     query = querybase + addr + ',+' + adata[9].replace(" ", '+') + ",+New+York+City,+NY&sensor=false"
     print count, ') ', 'Fetching ', query
     responsetext = urllib2.urlopen(query)
+
     try:
         response = json.loads(responsetext.read())
         addr = response["results"][0]["formatted_address"]
         lat = response["results"][0]["geometry"]["location"]["lat"]
         lng = response["results"][0]["geometry"]["location"]["lng"]
     except:
+        print response
         break
     created = datetime.datetime.fromtimestamp(int(adata[5])).strftime('%d-%b-%Y %H:%M')
     updated = datetime.datetime.fromtimestamp(int(adata[13])).strftime('%d-%b-%Y %H:%M')
