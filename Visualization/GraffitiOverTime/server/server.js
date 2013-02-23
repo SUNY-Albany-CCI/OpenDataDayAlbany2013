@@ -2,10 +2,21 @@
  * @author dhanannjay.deo
  */
  
-var http = require("http");
+// Module dependencies.
+var express = require('express');
 
-http.createServer(function(request, response) {
-  response.writeHead(200, {"Content-Type": "text/plain"});
-  response.write("Hello World 2");
-  response.end();
-}).listen(80);
+var app = express();
+
+// Configuration
+app.configure( function() {
+});
+
+// Routes
+app.get('/', function(req, res) {
+    res.send('Hello World');
+});
+
+app.use(express.static(__dirname + '/static'));
+app.use(express.static(__dirname + '/data'));
+
+app.listen(80);
