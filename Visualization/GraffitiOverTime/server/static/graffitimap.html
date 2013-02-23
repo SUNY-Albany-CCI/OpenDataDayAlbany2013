@@ -43,15 +43,18 @@
               max: maxdate,
               slide: function( event, ui ) 
                 {
-                $( "#range" ).val( "$" + ui.values[ 0 ] + " - $" + ui.values[ 1 ] );
+                 var dateend = new Date(0)
+                 var datebegin = new Date(0)
+                 datebegin.setUTCSeconds($( "#sliderrange" ).slider( "values", 0 ));
+                 dateend.setUTCSeconds($( "#sliderrange" ).slider( "values", 1 ));
+                 $( "#range" ).val( datebegin.toString()  + " " + dateend.toString());
+                console.log($( "#sliderrange" ).slider( "values",0))
                 // Filter the json data
                  filteredArray = data.filter(function(a){
                     time = parseInt(a[13])
-                    console.log(time, ui.values);
                      
                     if(time  > ui.values[ 0 ] &&  time  < ui.values[ 1 ])
                         {
-                         console.log("yay");
                          return(true);
                         } 
                 });
@@ -59,8 +62,9 @@
                 }
              });
              
-            $( "#range" ).val( "$" + $( "#sliderrange" ).slider( "values", 0 ) +
-              " - $" + $( "#sliderrange" ).slider( "values", 1 ) );
+            var datebegin = new Date($( "#sliderrange" ).slider( "values", 0 ))
+            var dateend = new Date($( "#sliderrange" ).slider( "values", 1 ))
+            $( "#range" ).val( datebegin.toString()  + dateend.toString());
          });
       });
 
