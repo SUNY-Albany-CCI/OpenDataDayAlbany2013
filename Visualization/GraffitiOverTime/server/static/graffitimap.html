@@ -3,7 +3,7 @@
 <head>
     <title>Leaflet Quick Start Guide Example</title>
     <meta charset="utf-8" />
-    <meta http-equiv="refresh" content="5" />
+    <meta http-equiv="refresh" content="15" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link rel="stylesheet" href="leaflet.css" />
@@ -11,9 +11,44 @@
 </head>
 <body>
     <div id="map" style="width: 600px; height: 400px"></div>
+    <p>
+      <label for="range">Price range:</label>
+      <input type="text" id="range" style="border: 0; color: #f6931f; font-weight: bold;" />
+    </p>
+    <div id="sliderrange"> </div>
+    <div id="jsonresults"></div>
 
     <script src="leaflet.js"></script>
+    <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+    <script src="http://code.jquery.com/jquery-migrate-1.1.1.min.js"></script>
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.1/themes/base/jquery-ui.css" />
+    <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+    <script src="http://code.jquery.com/ui/1.10.1/jquery-ui.js"></script>
     <script>
+    $(function() {
+         var data;
+         $.getJSON("withcoords-combined.js",function(result)
+         {
+             
+            data = result;
+            $("#jsonresults").append("<h1> Total " + data.length + "  Records</h1> </br>");
+            data.sort(function(a,b) { return parseInt(a[13]) - parseInt(b[13]) } );
+            mindate= parseInt(data[0][13])
+            maxdate= parseInt(data[369][13])
+            
+            $( "#sliderrange" ).slider({
+              value:[mindate, maxdate], 
+              range: true,
+              min: mindate,
+              max: maxdate,
+              slide: function( event, ui ) {
+                $( "#range" ).val( "$" + ui.values[ 0 ] + " - $" + ui.values[ 1 ] );
+                  }
+             });
+            $( "#range" ).val( "$" + $( "#sliderrange" ).slider( "values", 0 ) +
+              " - $" + $( "#sliderrange" ).slider( "values", 1 ) );
+          });
+      });
 
         var map = L.map('map').setView([51.505, -0.09], 13);
 
@@ -49,7 +84,7 @@
         }
 
         map.on('click', onMapClick);
-
+    
     </script>
 </body>
 </html>
