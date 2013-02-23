@@ -10,7 +10,7 @@ The scripts folder contains the scripts to get coordinates from the addresses ex
 Data
 ====
 
-
+Data comes from `here https://nycopendata.socrata.com/Other/Graffiti-Locations/2j99-6h29>`_ exported in json and saved initially in server/data
 
 Tools used
 ==========
