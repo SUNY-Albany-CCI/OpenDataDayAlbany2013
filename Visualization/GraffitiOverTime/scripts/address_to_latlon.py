@@ -3,7 +3,7 @@ import sys
 import urllib2
 import datetime
 
-file = open("../server/data/nyc-graffiti.js")
+file = open("../server/static/data/nyc-graffiti.js")
 info = json.load(file)
 
 # Format for google geocoding api
@@ -62,5 +62,5 @@ for adata in info["data"]:
     if count > 2000:
         break
 
-fileout = open("../server/data/withcoords.js", "w+")
+fileout = open("../server/static/data/withcoords.js", "w+")
 json.dump(withcoords, fileout)

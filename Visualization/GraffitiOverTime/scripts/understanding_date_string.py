@@ -3,7 +3,7 @@ import sys
 import urllib2
 import datetime
 
-file = open("../server/data/nyc-graffiti.js")
+file = open("../server/static/data/nyc-graffiti.js")
 info = json.load(file)
 count = 0
 

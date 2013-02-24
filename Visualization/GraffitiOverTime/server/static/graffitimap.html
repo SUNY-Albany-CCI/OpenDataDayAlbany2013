@@ -38,7 +38,7 @@
         }).addTo(map);
 
 
-         $.getJSON("withcoords-combined.js",function(result)
+         $.getJSON("data/withcoords-combined.js",function(result)
          {
             data = result;
             data.sort(function(a,b) { return parseInt(a[13]) - parseInt(b[13]) } );
