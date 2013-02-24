@@ -10,13 +10,13 @@ The scripts folder contains the scripts to get coordinates from the addresses ex
 Data
 ====
 
-Data comes from `https://nycopendata.socrata.com/Other/Graffiti-Locations/2j99-6h29`_ exported in json and saved initially in server/data
+Data comes from `nycopendata.socrata.com <https://nycopendata.socrata.com/Other/Graffiti-Locations/2j99-6h29>`_ exported in json and saved initially in server/data
 
 Working URL
 ===========
 
-`http://suny-albany-cci.github.com/OpenDataDayAlbany2013/Visualization/GraffitiOverTime/server/static/graffitimap.html`_
-`http://dhandeo.github.com/OpenDataDayAlbany2013/Visualization/GraffitiOverTime/server/static/graffitimap.html`_
+- `suny-albany-cci.github.com <http://suny-albany-cci.github.com/OpenDataDayAlbany2013/Visualization/GraffitiOverTime/server/static/graffitimap.html>`_
+- `dhandeo <http://dhandeo.github.com/OpenDataDayAlbany2013/Visualization/GraffitiOverTime/server/static/graffitimap.html>`_
 
 
 Tools used
