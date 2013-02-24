@@ -68,9 +68,6 @@
                         } 
                 });
                 $("#jsonresults").html("<h1> Total " + filteredArray.length + "  Records</h1> </br>");
-                var datebegin = new Date($( "#sliderrange" ).slider( "values", 0 ))
-                var dateend = new Date($( "#sliderrange" ).slider( "values", 1 ))
-                $( "#range" ).val( datebegin.toString()  + dateend.toString());
     
                 $.each(markers, function(index,a){
                    map.removeLayer(a); 
