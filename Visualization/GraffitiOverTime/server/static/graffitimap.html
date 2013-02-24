@@ -10,7 +10,7 @@
     <!--[if lte IE 8]><link rel="stylesheet" href="../dist/leaflet.ie.css" /><![endif]-->
 </head>
 <body>
-    <div id="map" style="width: 600px; height: 400px"></div>
+    <div id="mapdiv" style="width: 600px; height: 400px"></div>
     <p>
       <label for="range">Date range :</label>
       <input type="text" id="range" style="border: 0; color: #f6931f; font-weight: bold; width: 600px;"/>
@@ -25,19 +25,28 @@
     <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
     <script src="http://code.jquery.com/ui/1.10.1/jquery-ui.js"></script>
     <script>
+     var map;
+     var data;
+     var filteredArray = data;
+     var markers = new Array();
     $(function() {
-         var data;
-         var filteredArray = data;
+        map = L.map('mapdiv').setView([40.679336,-73.98571], 12);
+
+        L.tileLayer('http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/997/256/{z}/{x}/{y}.png', {
+            maxZoom: 18,
+            attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>'
+        }).addTo(map);
+
+
          $.getJSON("withcoords-combined.js",function(result)
          {
-           data = result;
-           $("#jsonresults").html("<h1> Total " + data.length + "  Records</h1> </br>");
+            data = result;
             data.sort(function(a,b) { return parseInt(a[13]) - parseInt(b[13]) } );
             mindate= parseInt(data[0][13])
             maxdate= parseInt(data[369][13])
             
             $( "#sliderrange" ).slider({
-              value:[mindate, maxdate], 
+              values:[mindate, mindate], 
               range: true,
               min: mindate,
               max: maxdate,
@@ -48,7 +57,7 @@
                  datebegin.setUTCSeconds($( "#sliderrange" ).slider( "values", 0 ));
                  dateend.setUTCSeconds($( "#sliderrange" ).slider( "values", 1 ));
                  $( "#range" ).val( datebegin.toString()  + " " + dateend.toString());
-                console.log($( "#sliderrange" ).slider( "values",0))
+                //console.log($( "#sliderrange" ).slider( "values",0))
                 // Filter the json data
                  filteredArray = data.filter(function(a){
                     time = parseInt(a[13])
@@ -59,39 +68,28 @@
                         } 
                 });
                 $("#jsonresults").html("<h1> Total " + filteredArray.length + "  Records</h1> </br>");
-                }
-             });
-             
-            var datebegin = new Date($( "#sliderrange" ).slider( "values", 0 ))
-            var dateend = new Date($( "#sliderrange" ).slider( "values", 1 ))
-            $( "#range" ).val( datebegin.toString()  + dateend.toString());
+                var datebegin = new Date($( "#sliderrange" ).slider( "values", 0 ))
+                var dateend = new Date($( "#sliderrange" ).slider( "values", 1 ))
+                $( "#range" ).val( datebegin.toString()  + dateend.toString());
+    
+                $.each(markers, function(index,a){
+                   map.removeLayer(a); 
+                });
+    
+                markers.length = 0;
+                
+                $.each(filteredArray, function (index, a) {
+                    var amarker = L.marker([parseFloat(a[20]), parseFloat(a[21])])
+                    amarker.addTo(map);
+                    markers.push(amarker);
+                });
+            }
+            
+            });
+
          });
-      });
-
-        var map = L.map('map').setView([51.505, -0.09], 13);
-
-        L.tileLayer('http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/997/256/{z}/{x}/{y}.png', {
-            maxZoom: 18,
-            attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>'
-        }).addTo(map);
-
-
-        L.marker([51.5, -0.09]).addTo(map)
-            .bindPopup("<b>Hello world!</b><br />I am a popup.").openPopup();
-
-        L.circle([51.508, -0.11], 500, {
-            color: 'red',
-            fillColor: '#f03',
-            fillOpacity: 0.5
-        }).addTo(map).bindPopup("I am a circle.");
-
-        L.polygon([
-            [51.509, -0.08],
-            [51.503, -0.06],
-            [51.51, -0.047]
-        ]).addTo(map).bindPopup("I am a polygon.");
-
-
+      
+          // +https://maps.google.com/?ll=40.679336,-73.98571&spn=0.218446,0.502968&t=h&z=12
         var popup = L.popup();
 
         function onMapClick(e) {
@@ -102,7 +100,7 @@
         }
 
         map.on('click', onMapClick);
-    
+      });
     </script>
 </body>
 </html>

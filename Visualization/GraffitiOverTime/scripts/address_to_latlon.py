@@ -46,9 +46,13 @@ for adata in info["data"]:
     except:
         closed = datetime.datetime.now().strftime('%d-%b-%Y %H:%M')
 
+    # [19]
     adata.append(addr)
+    # [20]
     adata.append(lat)
+    # [21]
     adata.append(lng)
+    # [22]
     adata.append(created)
     adata.append(updated)
     adata.append(closed)
